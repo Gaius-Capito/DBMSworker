@@ -18,12 +18,14 @@ class DbWorker:
         return self.__cur.fetchall()
 
     def show_table(self, table):
-        print(table)
-        self.__cur.execute("SELECT * FROM '%s'" %(table))
+        try:
+            self.__cur.execute("SELECT * FROM '%s'" %(table))
+        except Exception:
+            return []
         return self.__cur.fetchall()
 
-    def get_column_names(self):
-        self.__cur.execute("PRAGMA table_info(concerts);")
+    def get_column_names(self, table):
+        self.__cur.execute("PRAGMA table_info('%s');" %(table))
         return self.__cur.fetchall()
 
 
