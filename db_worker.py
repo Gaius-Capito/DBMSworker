@@ -1,7 +1,10 @@
-import sqlite3
 import psycopg2
+import sqlite3
+
 from tkinter import messagebox as mbox
+
 from abc import ABC, abstractmethod
+
 from config import host_name, user_name, password, db_name
 
 
@@ -37,7 +40,8 @@ class SQLiteWorker(DbWorker):
     def execute_query(self, query: str):
         result = self.__cur.execute(query).fetchall()
         self.__con.commit()
-        if not result: result = None
+        if not result:
+            result = None
         return result
 
     def execute_select_query(self, select_query: str):
@@ -45,7 +49,8 @@ class SQLiteWorker(DbWorker):
         return self.__cur.fetchall()
 
     def get_all_tables(self):
-        self.__cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        self.__cur.execute("SELECT name FROM sqlite_master "
+                           "WHERE type='table';")
         return self.__cur.fetchall()
 
     def show_table(self, table):
@@ -71,10 +76,20 @@ class SQLiteWorker(DbWorker):
 
 class PostgreSQL():
 
-    def __init__(self, user_name=user_name, password=password, host_name=host_name, db_name=db_name):
+    def __init__(
+            self,
+            user_name=user_name,
+            password=password,
+            host_name=host_name,
+            db_name=db_name
+    ):
         try:
-            self.con = psycopg2.connect(database=db_name, user=user_name, password=password, host=host_name,
-                                        port="5432")
+            self.con = psycopg2.connect(
+                database=db_name,
+                user=user_name,
+                password=password,
+                host=host_name,
+                port="5432")
             self.cur = self.con.cursor()
             mbox.showinfo('', "Connection to PostgreSQL DB successful")
         except Exception as e:
@@ -85,7 +100,8 @@ class PostgreSQL():
         self.con.commit()
 
     def get_all_tables(self):
-        self.cur.execute("""SELECT table_name FROM information_schema.tables WHERE table_schema='public'""")
+        self.cur.execute("""SELECT table_name FROM information_schema.tables 
+        WHERE table_schema='public'""")
         return self.cur.fetchall()
 
     def get_column_names(self):

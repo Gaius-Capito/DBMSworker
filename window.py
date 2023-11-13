@@ -1,7 +1,9 @@
 import tkinter as tk
+
 from tkinter import ttk
-from db_worker import SQLiteWorker, PostgreSQL
 from tkinter import filedialog as fd
+
+from db_worker import PostgreSQL, SQLiteWorker
 
 
 class Window(tk.Tk):
@@ -171,7 +173,6 @@ class Window(tk.Tk):
             self._db = SQLiteWorker()
         elif dbms == 2:
             self._db = PostgreSQL()
-
 
 
 window = Window()
